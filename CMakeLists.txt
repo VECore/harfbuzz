@@ -3,6 +3,13 @@ project(harfbuzz)
 
 message(WARN "HarfBuzz has a Meson port and tries to migrate all the other build systems to it, please consider using it as we might remove our cmake port soon.")
 
+
+if (EMSCRIPTEN) 
+	message(STATUS "Current Env: Emscripten")
+	add_definitions(-std=c++11 -O3 -s USE_PTHREADS=1  )
+	set(CMAKE_USE_PTHREADS_INIT ON)
+endif()
+
 ## Limit framework build to Xcode generator
 if (BUILD_FRAMEWORK)
   # for a framework build on macOS, use:
@@ -179,6 +186,8 @@ set (HB_VERSION ${CMAKE_MATCH_1})
 set (HB_VERSION_MAJOR ${CMAKE_MATCH_2})
 set (HB_VERSION_MINOR ${CMAKE_MATCH_3})
 set (HB_VERSION_MICRO ${CMAKE_MATCH_4})
+
+
 
 ## Define sources and headers of the project
 set (project_sources ${PROJECT_SOURCE_DIR}/src/harfbuzz.cc) # use amalgam source
